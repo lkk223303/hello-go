@@ -16,7 +16,7 @@ func RenderTemplateTest(w http.ResponseWriter, tmpl string) {
 	}
 }
 
-// template cache map
+// template cache (map)
 var tc = make(map[string]*template.Template)
 
 func RenderTemplate(w http.ResponseWriter, t string) {
