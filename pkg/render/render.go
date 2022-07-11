@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/lkk223303/hello-go/pkg/config"
+	"github.com/lkk223303/hello-go/pkg/models"
 )
 
 var app *config.AppConfig
@@ -17,8 +18,12 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+	return td
+}
+
 // Render Template using html template
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	// get the template cache from the app config
 	var tc map[string]*template.Template
 	if app.UseCache {
@@ -38,7 +43,9 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
 	buf := new(bytes.Buffer)
 
-	err := t.Execute(buf, nil)
+	td = AddDefaultData(td)
+
+	err := t.Execute(buf, td)
 	if err != nil {
 		log.Println(err)
 	}
